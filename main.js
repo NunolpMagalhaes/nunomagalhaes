@@ -1,5 +1,5 @@
 //#region var/const declarations;
-var lastNames = ["Um", "Dois", "Três", "Quatro", "Cinco", "Seis", "Sete", "Oito", "Nove", "Dez", "Onze", "Doze", "Treze", "Catorze", "Quinze", "Dezasseis"]
+var lastNames = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen"]
 // Header
 var btnLoadTeam = document.getElementById("head-team");
 var btnLoadMatch = document.getElementById("head-match");
@@ -85,7 +85,7 @@ const arrSum = arr => arr.reduce((a,b) => a + b, 0);
 var struct_general = {  // Generic Container
     "nplay": 5,
     "nsub": 11,
-    "per_lbl": ["1P", "2P", "PE1", "PE2"],
+    "per_lbl": ["1H", "2H", "ET1", "ET2"],
     "nper": 4,
     "per_time": [20, 20, 5, 5],
     "play_time": [0, 0, 0, 0],
@@ -107,8 +107,8 @@ var struct_match = { // Match Information Container
     "stage": "Stage",
     "kickoff": ['00', '00'], // 00h:00
     "score": [0, 0], // Home, Away
-    "teams": ["Equipa Casa", "Equipa Fora"],
-    "initials": ["CASA", "FORA"]
+    "teams": ["Home Team", "Away Team"],
+    "initials": ["HOME", "AWAY"]
 }
 var struct_team = { // Team Information Container
     "name": "Team",
@@ -220,7 +220,7 @@ clockKickOff.onclick = function() {
                 tbl_match["sec_run"].push(timeMain[1]);
                 tbl_match["min_eff"].push(timePlay[0]);
                 tbl_match["sec_eff"].push(timePlay[1]);
-                tbl_match["result"].push("cinco inicial");
+                tbl_match["result"].push("lineup");
                 tbl_match["player_no1"].push(struct_team["players"][i]["pno"]);
                 tbl_match["last_name1"].push(struct_team["players"][i]["nlast"]);
                 tbl_match["player_no2"].push(-1);
@@ -237,7 +237,7 @@ clockKickOff.onclick = function() {
         tbl_match["sec_run"].push(timeMain[1]);
         tbl_match["min_eff"].push(timePlay[0]);
         tbl_match["sec_eff"].push(timePlay[1]);
-        tbl_match["result"].push("início da partida");
+        tbl_match["result"].push("kick off");
         tbl_match["player_no1"].push(-1);
         tbl_match["last_name1"].push("");
         tbl_match["player_no2"].push(-1);
@@ -279,7 +279,7 @@ clockBreak.onclick = function() {
     tbl_match["sec_run"].push(timeMain[1]);
     tbl_match["min_eff"].push(timePlay[0]);
     tbl_match["sec_eff"].push(timePlay[1]);
-    tbl_match["result"].push("intervalo");
+    tbl_match["result"].push("break");
     tbl_match["player_no1"].push(-1);
     tbl_match["last_name1"].push("");
     tbl_match["player_no2"].push(-1);
@@ -356,7 +356,7 @@ clockStop.onclick = function() {
         
         clockStop.classList.add('toggle');
         clockPlay.classList.add('pause');
-        tgl_string = "paragem"
+        tgl_string = "stoppage"
     } else {
         IntervalP = setInterval(startPlay, 1000);
         struct_time["stoptgl"] = 0;
@@ -365,7 +365,7 @@ clockStop.onclick = function() {
         
         clockStop.classList.remove('toggle');
         clockPlay.classList.remove('pause');
-        tgl_string = "retoma"
+        tgl_string = "restart"
     }
     // Update Match Table
     updateTime();
@@ -716,7 +716,7 @@ function switchPlayers(selArray){
             tbl_match["sec_run"].push(timeMain[1]);
             tbl_match["min_eff"].push(timePlay[0]);
             tbl_match["sec_eff"].push(timePlay[1]);
-            tbl_match["result"].push("substituição");
+            tbl_match["result"].push("substitution");
             tbl_match["player_no1"].push(struct_team["players"][offID]["pno"]);
             tbl_match["last_name1"].push(struct_team["players"][offID]["nlast"]);
             tbl_match["player_no2"].push(struct_team["players"][onID]["pno"]);
@@ -755,18 +755,18 @@ btnGH.onclick = function() {
     struct_match["score"][0]++
     txtHScore.innerHTML = String(parseInt(txtHScore.innerHTML || "0", 10) + 1);
     if (struct_team["tgl_home"]==1) {
-        addGoal("golo marcado");
+        addGoal("goal for");
     } else {
-        addGoal("golo sofrido")
+        addGoal("goal against")
     }
 }
 btnGA.onclick = function() {
     struct_match["score"][1]++
     txtAScore.innerHTML = String(parseInt(txtAScore.innerHTML || "0", 10) + 1);
     if (struct_team["tgl_home"]==0) {
-        addGoal("golo marcado");
+        addGoal("goal for");
     } else {
-        addGoal("golo sofrido")
+        addGoal("goal against")
     }
 }
 
@@ -938,8 +938,8 @@ function updateTeamInfo(mInfo, pInfo) {
     txtAway.innerHTML = struct_match.initials[1];
     txtHome.style.fontSize = "2vh"
     txtAway.style.fontSize = "2vh"
-    btnGH.innerHTML = "Golo<br />" + struct_match.initials[0];
-    btnGA.innerHTML = "Golo<br />" + struct_match.initials[1];
+    btnGH.innerHTML = struct_match.initials[0] + "<br />Golo";
+    btnGA.innerHTML = struct_match.initials[1] + "<br />Golo";
 
     // Update Player UI Labels
     updateLiveButtons();
@@ -985,8 +985,8 @@ btnLoadMatch.onchange = function() {
             txtAway.innerHTML = struct_match.initials[1];
             txtHome.style.fontSize = "2vh"
             txtAway.style.fontSize = "2vh"
-            btnGH.innerHTML = "Golo<br />" + struct_match.initials[0];
-            btnGA.innerHTML = "Golo<br />" + struct_match.initials[1];
+            btnGH.innerHTML = struct_match.initials[0] + "<br />Golo";
+            btnGA.innerHTML = struct_match.initials[1] + "<br />Golo";
             btnM1Lbl.innerHTML = struct_general.metric_name[0];
             btnM2Lbl.innerHTML = struct_general.metric_name[1];
             btnM3Lbl.innerHTML = struct_general.metric_name[2];
@@ -1027,7 +1027,7 @@ function updateLiveButtons() {
     // Update Player UI Labels
     for (i=0; i<struct_team.players.length; i++) {
         elName = document.getElementById('name'+(i+1));
-        elName.innerHTML = (struct_team.players[i].nlast || "Jogadora").substring(0,8);
+        elName.innerHTML = struct_team.players[i].nlast.substring(0,8);
         elNo = document.getElementById('no'+(i+1));
         elNo.innerHTML = struct_team.players[i].pno + '.';
     }
@@ -1290,16 +1290,18 @@ function getAllIndexes(arr, val) {
 
 
 window.addEventListener('load', function() {
-    var stopPanel = document.getElementById('pnl-stop');
-    if (stopPanel) stopPanel.style.display = 'none';
-    var lblMain = document.getElementById('lbl-clock-main');
-    if (lblMain) lblMain.innerHTML = 'Tempo de jogo';
-    var lblPer = document.getElementById('lbl-period');
-    if (lblPer) lblPer.innerHTML = 'Período';
-    var kick = document.getElementById('kick-off');
-    if (kick) kick.innerHTML = 'Início da partida';
-    var brk = document.getElementById('break');
-    if (brk) brk.innerHTML = 'Intervalo';
-    var pause = document.getElementById('pause');
-    if (pause) pause.innerHTML = 'Pausa';
+  var metrics = document.getElementById('pnl-metrics');
+  if (metrics) metrics.style.display = 'none';
+  var analysis = document.getElementById('pnl-analysis');
+  if (analysis) analysis.style.display = 'none';
+  var stopPanel = document.getElementById('pnl-stop');
+  if (stopPanel) stopPanel.style.display = 'none';
+  var lblMain = document.getElementById('lbl-clock-main');
+  if (lblMain) lblMain.innerHTML = 'TEMPO DE JOGO:';
+  var lblPer = document.getElementById('lbl-period');
+  if (lblPer) lblPer.innerHTML = 'PERÍODO:';
+  var btnGoalH = document.getElementById('goal-h');
+  var btnGoalA = document.getElementById('goal-a');
+  if (btnGoalH && !btnGoalH.innerHTML.includes('<br')) btnGoalH.innerHTML = 'Golo<br />Casa';
+  if (btnGoalA && !btnGoalA.innerHTML.includes('<br')) btnGoalA.innerHTML = 'Golo<br />Fora';
 });
