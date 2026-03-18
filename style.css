@@ -224,3 +224,76 @@ body{min-height:100vh;overflow-x:auto}
   min-height:40px !important;
   font-size:26px !important;
 }
+
+
+/* Mostrar números da contagem com mais destaque */
+.jersey-time{
+  color:#49d16d !important;
+  opacity:1 !important;
+}
+.player:not(.active) .jersey-time{
+  color:#ff6759 !important;
+}
+.clock,.period,.score-click{
+  opacity:1 !important;
+  color:#eef4ff !important;
+}
+.score-click-wrap{
+  justify-content:center !important;
+}
+
+
+/* DESTACAR TEMPO PEQUENO (tempo jogado total) */
+.jersey-total{
+  color:#00ff9c !important;
+  font-weight:800 !important;
+  font-size:13px !important;
+  opacity:1 !important;
+}
+
+/* tempo pequeno quando não está em campo */
+.player:not(.active) .jersey-total{
+  color:#ff6b6b !important;
+}
+
+
+/* TEMPO PEQUENO SEMPRE BRANCO */
+.jersey-total{
+  color:#ffffff !important;
+  font-weight:700 !important;
+  font-size:13px !important;
+}
+
+/* remover cores diferentes */
+.player:not(.active) .jersey-total{
+  color:#ffffff !important;
+}
+
+
+/* ALERTA 3 MIN: amarelo suave a piscar */
+.player.alert-3min{
+  animation: alertYellow 1s linear infinite !important;
+}
+@keyframes alertYellow{
+  0%,100%{
+    box-shadow: inset 0 0 0 3px #f0c400, 0 0 0 rgba(240,196,0,0);
+  }
+  50%{
+    box-shadow: inset 0 0 0 3px rgba(240,196,0,0.15), 0 0 10px rgba(240,196,0,0.45);
+  }
+}
+
+/* ALERTA 4 MIN: vermelho mais intenso */
+.player.alert-4min{
+  animation: alertRedStrong 0.45s linear infinite !important;
+}
+@keyframes alertRedStrong{
+  0%,100%{
+    background:#7a3e47;
+    box-shadow: inset 0 0 0 4px #ff3b30, 0 0 18px rgba(255,59,48,0.55);
+  }
+  50%{
+    background:#2a0f12;
+    box-shadow: inset 0 0 0 4px #ffffff, 0 0 28px rgba(255,59,48,0.95);
+  }
+}

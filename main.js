@@ -1349,3 +1349,68 @@ btnGA.onclick = function() {
     struct_match["score"][1]++;
     refreshScoreButtons();
 }
+
+
+window.addEventListener('load', function() {
+  var homeLbl = document.getElementById('home');
+  var awayLbl = document.getElementById('away');
+  if (homeLbl) homeLbl.innerHTML = 'EQUIPA CASA';
+  if (awayLbl) awayLbl.innerHTML = 'EQUIPA FORA';
+});
+
+function refreshScoreButtons() {
+    if (btnGH) btnGH.innerHTML = String(struct_match["score"][0]);
+    if (btnGA) btnGA.innerHTML = String(struct_match["score"][1]);
+    if (txtHScore) txtHScore.innerHTML = String(struct_match["score"][0]);
+    if (txtAScore) txtAScore.innerHTML = String(struct_match["score"][1]);
+}
+
+btnGH.onclick = function() {
+    struct_match["score"][0] = (struct_match["score"][0] || 0) + 1;
+    refreshScoreButtons();
+}
+btnGA.onclick = function() {
+    struct_match["score"][1] = (struct_match["score"][1] || 0) + 1;
+    refreshScoreButtons();
+}
+
+
+function refreshPlayerTotals() {
+    for (var i = 1; i <= struct_team.players.length; i++) {
+        var totalEl = document.getElementById("total" + i);
+        if (!totalEl) continue;
+        var tot = struct_team.players[i-1].totplay || 0;
+        totalEl.innerHTML = setClock(tot);
+    }
+}
+
+function updatePlayerAlerts() {
+    for (var i = 1; i <= struct_team.players.length; i++) {
+        var card = document.getElementById("play" + i);
+        if (!card) continue;
+
+        var secs = struct_team.players[i-1].tplay || 0;
+        card.classList.remove('alert-3min');
+        card.classList.remove('alert-4min');
+
+        if (struct_team.players[i-1].active == 1) {
+            if (secs >= 240) {
+                card.classList.add('alert-4min');
+            } else if (secs >= 180) {
+                card.classList.add('alert-3min');
+            }
+        }
+    }
+}
+
+window.addEventListener('load', function() {
+    refreshPlayerTotals();
+    updatePlayerAlerts();
+});
+
+var _origUpdateLiveVis = updateLiveVis;
+updateLiveVis = function() {
+    _origUpdateLiveVis();
+    refreshPlayerTotals();
+    updatePlayerAlerts();
+};
