@@ -52,3 +52,115 @@ body{min-height:100vh;overflow-x:auto}
 .score-box{display:none!important}
 #pnl-metrics,#pnl-analysis{display:none}
 .tbl-data{width:100%}
+
+
+/* COMPACTO: para abrir e ver tudo logo */
+#app-container{
+  padding:4px !important;
+}
+#grid-container{
+  grid-template-columns:minmax(1080px,1fr) 300px !important;
+  gap:6px !important;
+  max-width:1380px !important;
+  min-width:1380px !important;
+}
+.panel{
+  border-radius:8px !important;
+}
+#header{
+  padding:6px 8px !important;
+}
+.header-actions{
+  gap:6px !important;
+}
+.load-file,.button-1{
+  min-height:42px !important;
+  font-size:13px !important;
+  padding:8px 6px !important;
+  border-radius:8px !important;
+}
+
+#pnl-field{
+  padding:6px !important;
+  gap:3px !important;
+}
+.player{
+  min-height:120px !important;
+  padding:8px !important;
+  border-radius:10px !important;
+}
+.jersey-no{
+  font-size:20px !important;
+  margin:0 0 4px 0 !important;
+}
+.jersey-name{
+  font-size:18px !important;
+  margin:0 0 8px 0 !important;
+}
+.jersey-time{
+  font-size:44px !important;
+  margin:0 0 6px 0 !important;
+}
+.jersey-total{
+  font-size:14px !important;
+}
+
+#right-column{
+  gap:6px !important;
+}
+#pnl-time,#pnl-match{
+  padding:6px !important;
+}
+.top-time-row{
+  grid-template-columns:1fr 88px !important;
+  gap:6px !important;
+  margin-bottom:8px !important;
+}
+.time-block{
+  padding:6px !important;
+}
+.txt-lbl{
+  font-size:11px !important;
+  margin-bottom:4px !important;
+}
+.clock{
+  font-size:42px !important;
+  padding:8px 4px !important;
+}
+.period{
+  font-size:40px !important;
+  padding:8px 4px !important;
+}
+.time-buttons{
+  gap:8px !important;
+  margin-top:2px !important;
+}
+.small-buttons{
+  gap:8px !important;
+}
+.button-1.kickoff{
+  width:88% !important;
+  min-height:54px !important;
+  font-size:16px !important;
+}
+.button-1.pause,.button-1.break{
+  width:78% !important;
+  min-height:42px !important;
+  font-size:14px !important;
+}
+
+#pnl-match{
+  gap:6px !important;
+}
+.team-name{
+  padding:6px 4px !important;
+  font-size:16px !important;
+}
+.score-click-wrap{
+  gap:6px !important;
+}
+.score-click{
+  min-height:60px !important;
+  font-size:38px !important;
+  border-radius:8px !important;
+}
