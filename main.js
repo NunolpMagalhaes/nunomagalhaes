@@ -107,8 +107,8 @@ var struct_match = { // Match Information Container
     "stage": "Stage",
     "kickoff": ['00', '00'], // 00h:00
     "score": [0, 0], // Home, Away
-    "teams": ["Home Team", "Away Team"],
-    "initials": ["HOME", "AWAY"]
+    "teams": ["Equipa Casa", "Equipa Fora"],
+    "initials": ["CASA", "FORA"]
 }
 var struct_team = { // Team Information Container
     "name": "Team",
@@ -616,6 +616,10 @@ function updateLiveVis() {
         }
         txtClock.innerHTML = setClock(clockDat);
         txtClock.style.color = cCol;
+        txtTotal = document.getElementById("total" + i);
+        if (txtTotal) {
+            txtTotal.innerHTML = setClock(struct_team.players[i-1].totplay || 0);
+        }
 
         wrRatio = Math.round(100*struct_team.players[i-1].tplay / (struct_team.players[i-1].trest+1))/100;
         if (wrRatio>=1) {
@@ -751,18 +755,22 @@ btnP14.onclick = function(){setSelected(14); checkSub()}
 btnP15.onclick = function(){setSelected(15); checkSub()}
 btnP16.onclick = function(){setSelected(16); checkSub()}
 
-btnGH.onclick = function() {
-    struct_match["score"][0]++
-    txtHScore.innerHTML = String(parseInt(txtHScore.innerHTML || "0", 10) + 1);
+btnGH.onclick = function(e) {
+    if (e) e.preventDefault();
+    struct_match["score"][0]++;
+    txtHScore.innerHTML = struct_match["score"][0];
+    btnGH.innerHTML = struct_match["score"][0];
     if (struct_team["tgl_home"]==1) {
         addGoal("goal for");
     } else {
         addGoal("goal against")
     }
 }
-btnGA.onclick = function() {
-    struct_match["score"][1]++
-    txtAScore.innerHTML = String(parseInt(txtAScore.innerHTML || "0", 10) + 1);
+btnGA.onclick = function(e) {
+    if (e) e.preventDefault();
+    struct_match["score"][1]++;
+    txtAScore.innerHTML = struct_match["score"][1];
+    btnGA.innerHTML = struct_match["score"][1];
     if (struct_team["tgl_home"]==0) {
         addGoal("goal for");
     } else {
@@ -934,12 +942,12 @@ function updateTeamInfo(mInfo, pInfo) {
     btnM1A.innerHTML = struct_match.initials[1];
     btnM2A.innerHTML = struct_match.initials[1];
     btnM3A.innerHTML = struct_match.initials[1];
-    txtHome.innerHTML = struct_match.initials[0];
-    txtAway.innerHTML = struct_match.initials[1];
-    txtHome.style.fontSize = "2vh"
-    txtAway.style.fontSize = "2vh"
-    btnGH.innerHTML = struct_match.initials[0] + "\n Goal";
-    btnGA.innerHTML = struct_match.initials[1] + "\n Goal";
+    txtHome.innerHTML = struct_match.teams[0];
+    txtAway.innerHTML = struct_match.teams[1];
+    txtHome.style.fontSize = "";
+    txtAway.style.fontSize = "";
+    btnGH.innerHTML = struct_match["score"][0];
+    btnGA.innerHTML = struct_match["score"][1];
 
     // Update Player UI Labels
     updateLiveButtons();
@@ -981,12 +989,12 @@ btnLoadMatch.onchange = function() {
             txtHScore.innerHTML = struct_match["score"][0];
             txtAScore.innerHTML = struct_match["score"][1];
             // Update Team UI Labels
-            txtHome.innerHTML = struct_match.initials[0];
-            txtAway.innerHTML = struct_match.initials[1];
-            txtHome.style.fontSize = "2vh"
-            txtAway.style.fontSize = "2vh"
-            btnGH.innerHTML = struct_match.initials[0] + "\n Goal";
-            btnGA.innerHTML = struct_match.initials[1] + "\n Goal";
+            txtHome.innerHTML = struct_match.teams[0];
+            txtAway.innerHTML = struct_match.teams[1];
+            txtHome.style.fontSize = "";
+            txtAway.style.fontSize = "";
+            btnGH.innerHTML = struct_match["score"][0];
+            btnGA.innerHTML = struct_match["score"][1];
             btnM1Lbl.innerHTML = struct_general.metric_name[0];
             btnM2Lbl.innerHTML = struct_general.metric_name[1];
             btnM3Lbl.innerHTML = struct_general.metric_name[2];
@@ -1208,6 +1216,11 @@ window.onload = function() {
     buttonEnable(btnExport, false);
     updateAnlUITable();
     updateLiveVis();
+    btnGH.innerHTML = struct_match["score"][0];
+    btnGA.innerHTML = struct_match["score"][1];
+    document.getElementById("pnl-metrics").style.display = "none";
+    document.getElementById("pnl-analysis").style.display = "none";
+    document.getElementById("pnl-stop").style.display = "none";
 }
 //#endregion
 
@@ -1287,315 +1300,3 @@ function getAllIndexes(arr, val) {
             indexes.push(i);
     return indexes;
 }
-
-
-function updateFourMinuteAlert() {
-    for (var i = 1; i <= struct_team.players.length; i++) {
-        var card = document.getElementById("play" + i);
-        if (!card) continue;
-        var playSeconds = struct_team.players[i-1].tplay || 0;
-        card.classList.remove('alert-3min');
-        card.classList.remove('alert-4min');
-        if (struct_team.players[i-1].active == 1) {
-            if (playSeconds >= 240) {
-                card.classList.add('alert-4min');
-            } else if (playSeconds >= 180) {
-                card.classList.add('alert-3min');
-            }
-        }
-    }
-}
-
-function refreshScoreButtons() {
-    if (btnGH) btnGH.innerHTML = String(struct_match["score"][0]);
-    if (btnGA) btnGA.innerHTML = String(struct_match["score"][1]);
-    if (txtHScore) txtHScore.innerHTML = String(struct_match["score"][0]);
-    if (txtAScore) txtAScore.innerHTML = String(struct_match["score"][1]);
-}
-
-function refreshPlayerTotals() {
-    for (var i = 1; i <= struct_team.players.length; i++) {
-        var totalEl = document.getElementById("total" + i);
-        if (!totalEl) continue;
-        var tot = struct_team.players[i-1].totplay || 0;
-        totalEl.innerHTML = setClock(tot);
-    }
-}
-
-window.addEventListener('load', function() {
-  var metrics = document.getElementById('pnl-metrics');
-  if (metrics) metrics.style.display = 'none';
-  var analysis = document.getElementById('pnl-analysis');
-  if (analysis) analysis.style.display = 'none';
-  var stopPanel = document.getElementById('pnl-stop');
-  if (stopPanel) stopPanel.style.display = 'none';
-  refreshScoreButtons();
-  refreshPlayerTotals();
-  updateFourMinuteAlert();
-});
-
-var _oldUpdateLiveVis = updateLiveVis;
-updateLiveVis = function() {
-    _oldUpdateLiveVis();
-    refreshPlayerTotals();
-    updateFourMinuteAlert();
-};
-
-btnGH.onclick = function() {
-    struct_match["score"][0]++;
-    refreshScoreButtons();
-}
-btnGA.onclick = function() {
-    struct_match["score"][1]++;
-    refreshScoreButtons();
-}
-
-
-window.addEventListener('load', function() {
-  var homeLbl = document.getElementById('home');
-  var awayLbl = document.getElementById('away');
-  if (homeLbl) homeLbl.innerHTML = 'EQUIPA CASA';
-  if (awayLbl) awayLbl.innerHTML = 'EQUIPA FORA';
-});
-
-function refreshScoreButtons() {
-    if (btnGH) btnGH.innerHTML = String(struct_match["score"][0]);
-    if (btnGA) btnGA.innerHTML = String(struct_match["score"][1]);
-    if (txtHScore) txtHScore.innerHTML = String(struct_match["score"][0]);
-    if (txtAScore) txtAScore.innerHTML = String(struct_match["score"][1]);
-}
-
-btnGH.onclick = function() {
-    struct_match["score"][0] = (struct_match["score"][0] || 0) + 1;
-    refreshScoreButtons();
-}
-btnGA.onclick = function() {
-    struct_match["score"][1] = (struct_match["score"][1] || 0) + 1;
-    refreshScoreButtons();
-}
-
-
-function refreshPlayerTotals() {
-    for (var i = 1; i <= struct_team.players.length; i++) {
-        var totalEl = document.getElementById("total" + i);
-        if (!totalEl) continue;
-        var tot = struct_team.players[i-1].totplay || 0;
-        totalEl.innerHTML = setClock(tot);
-    }
-}
-
-function updatePlayerAlerts() {
-    for (var i = 1; i <= struct_team.players.length; i++) {
-        var card = document.getElementById("play" + i);
-        if (!card) continue;
-
-        var secs = struct_team.players[i-1].tplay || 0;
-        card.classList.remove('alert-3min');
-        card.classList.remove('alert-4min');
-
-        if (struct_team.players[i-1].active == 1) {
-            if (secs >= 240) {
-                card.classList.add('alert-4min');
-            } else if (secs >= 180) {
-                card.classList.add('alert-3min');
-            }
-        }
-    }
-}
-
-window.addEventListener('load', function() {
-    refreshPlayerTotals();
-    updatePlayerAlerts();
-});
-
-var _origUpdateLiveVis = updateLiveVis;
-updateLiveVis = function() {
-    _origUpdateLiveVis();
-    refreshPlayerTotals();
-    updatePlayerAlerts();
-};
-
-
-function forceAlertRefresh() {
-    updatePlayerAlerts();
-}
-
-window.addEventListener('load', function() {
-    forceAlertRefresh();
-});
-
-setInterval(function(){
-    forceAlertRefresh();
-}, 500);
-
-
-/* ===== Ajustes finais ===== */
-function refreshScoreButtonsFinal() {
-    if (btnGH) btnGH.innerHTML = String(struct_match["score"][0] || 0);
-    if (btnGA) btnGA.innerHTML = String(struct_match["score"][1] || 0);
-    if (txtHScore) txtHScore.innerHTML = String(struct_match["score"][0] || 0);
-    if (txtAScore) txtAScore.innerHTML = String(struct_match["score"][1] || 0);
-}
-
-function refreshPlayerTotalsFinal() {
-    for (var i = 1; i <= struct_team.players.length; i++) {
-        var totalEl = document.getElementById("total" + i);
-        if (!totalEl) continue;
-        var tot = struct_team.players[i-1].totplay || 0;
-        totalEl.innerHTML = setClock(tot);
-    }
-}
-
-function updatePlayerAlertsFinal() {
-    for (var i = 1; i <= struct_team.players.length; i++) {
-        var card = document.getElementById("play" + i);
-        if (!card) continue;
-
-        var secs = struct_team.players[i-1].tplay || 0;
-        card.classList.remove('alert-3min');
-        card.classList.remove('alert-4min');
-
-        if (struct_team.players[i-1].active == 1) {
-            if (secs >= 240) {
-                card.classList.add('alert-4min');
-            } else if (secs >= 180) {
-                card.classList.add('alert-3min');
-            }
-        }
-    }
-}
-
-window.addEventListener('load', function() {
-    var metrics = document.getElementById('pnl-metrics');
-    if (metrics) metrics.style.display = 'none';
-    var analysis = document.getElementById('pnl-analysis');
-    if (analysis) analysis.style.display = 'none';
-    var stopPanel = document.getElementById('pnl-stop');
-    if (stopPanel) stopPanel.style.display = 'none';
-
-    refreshScoreButtonsFinal();
-    refreshPlayerTotalsFinal();
-    updatePlayerAlertsFinal();
-});
-
-if (typeof updateLiveVis === 'function') {
-    var _updateLiveVisFinal = updateLiveVis;
-    updateLiveVis = function() {
-        _updateLiveVisFinal();
-        refreshPlayerTotalsFinal();
-        updatePlayerAlertsFinal();
-    };
-}
-
-btnGH.onclick = function() {
-    struct_match["score"][0] = (struct_match["score"][0] || 0) + 1;
-    refreshScoreButtonsFinal();
-}
-btnGA.onclick = function() {
-    struct_match["score"][1] = (struct_match["score"][1] || 0) + 1;
-    refreshScoreButtonsFinal();
-}
-
-
-function refreshScoreButtonsStrict() {
-    if (btnGH) btnGH.textContent = String(struct_match["score"][0] || 0);
-    if (btnGA) btnGA.textContent = String(struct_match["score"][1] || 0);
-    if (txtHScore) txtHScore.textContent = String(struct_match["score"][0] || 0);
-    if (txtAScore) txtAScore.textContent = String(struct_match["score"][1] || 0);
-}
-
-function refreshSmallTimesStrict() {
-    for (var i = 1; i <= struct_team.players.length; i++) {
-        var el = document.getElementById("total" + i);
-        if (!el) continue;
-        var tot = struct_team.players[i-1].totplay || 0;
-        el.textContent = setClock(tot);
-    }
-}
-
-function bindScoreClicksStrict() {
-    if (btnGH) {
-        btnGH.onclick = function(e) {
-            e.preventDefault();
-            struct_match["score"][0] = (struct_match["score"][0] || 0) + 1;
-            refreshScoreButtonsStrict();
-        };
-    }
-    if (btnGA) {
-        btnGA.onclick = function(e) {
-            e.preventDefault();
-            struct_match["score"][1] = (struct_match["score"][1] || 0) + 1;
-            refreshScoreButtonsStrict();
-        };
-    }
-}
-
-window.addEventListener('load', function() {
-    refreshScoreButtonsStrict();
-    refreshSmallTimesStrict();
-    bindScoreClicksStrict();
-});
-
-setInterval(function() {
-    refreshSmallTimesStrict();
-    refreshScoreButtonsStrict();
-}, 500);
-
-if (typeof updateLiveVis === 'function') {
-    var __prevUpdateLiveVisStrict = updateLiveVis;
-    updateLiveVis = function() {
-        __prevUpdateLiveVisStrict();
-        refreshSmallTimesStrict();
-        refreshScoreButtonsStrict();
-    };
-}
-
-
-/* ===== FIX REAL: tempo pequeno e marcador ===== */
-function refreshMiniTimesReal() {
-    for (var i = 1; i <= struct_team.players.length; i++) {
-        var el = document.getElementById("total" + i);
-        if (!el) continue;
-        var tot = 0;
-        if (struct_team && struct_team.players && struct_team.players[i-1]) {
-            tot = struct_team.players[i-1].totplay || 0;
-        }
-        el.textContent = setClock(tot);
-    }
-}
-
-function refreshScoresReal() {
-    if (btnGH) btnGH.textContent = String((struct_match && struct_match.score ? struct_match.score[0] : 0) || 0);
-    if (btnGA) btnGA.textContent = String((struct_match && struct_match.score ? struct_match.score[1] : 0) || 0);
-    if (txtHScore) txtHScore.textContent = String((struct_match && struct_match.score ? struct_match.score[0] : 0) || 0);
-    if (txtAScore) txtAScore.textContent = String((struct_match && struct_match.score ? struct_match.score[1] : 0) || 0);
-}
-
-function bindScoreClicksReal() {
-    if (btnGH) {
-        btnGH.onclick = function(e) {
-            if (e) e.preventDefault();
-            struct_match.score[0] = (struct_match.score[0] || 0) + 1;
-            refreshScoresReal();
-        };
-    }
-    if (btnGA) {
-        btnGA.onclick = function(e) {
-            if (e) e.preventDefault();
-            struct_match.score[1] = (struct_match.score[1] || 0) + 1;
-            refreshScoresReal();
-        };
-    }
-}
-
-window.addEventListener('load', function() {
-    refreshMiniTimesReal();
-    refreshScoresReal();
-    bindScoreClicksReal();
-});
-
-/* refresh visual every second */
-setInterval(function() {
-    refreshMiniTimesReal();
-    refreshScoresReal();
-}, 1000);

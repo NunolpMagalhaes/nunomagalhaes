@@ -1,439 +1,62 @@
 
-:root{--text:#efefef;--cyan:#23e8ff;--yellow:#f0c400;--green:#2df08c;--red:#ff4b5e}
+:root{--text:#efefef;--cyan:#23e8ff;--yellow:#f0c400;--green:#49d16d;--red:#ff6759}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#000;color:var(--text);font-family:Arial,Helvetica,sans-serif}
-body{min-height:100vh;overflow-x:auto}
+body{min-height:100vh}
 .hidden{display:none!important}
-#app-container{padding:8px}
-#grid-container{display:grid;grid-template-columns:minmax(1220px,1fr) 430px;grid-template-areas:"header header" "field right";gap:10px;max-width:1720px;min-width:1660px;margin:0 auto}
-.panel{background:linear-gradient(180deg,#3f4a56 0%, #57616c 100%);border:2px solid #101418;border-radius:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
-#header{grid-area:header;padding:8px 12px;background:linear-gradient(180deg,#161d24 0%, #1f2730 100%)}
-.header-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+#app-container{padding:4px}
+#grid-container{
+  display:grid;
+  grid-template-columns:minmax(940px,1fr) 280px;
+  grid-template-areas:"header header" "field right";
+  gap:6px;max-width:1230px;margin:0 auto;
+}
+.panel{background:linear-gradient(180deg,#3f4a56 0%, #57616c 100%);border:2px solid #101418;border-radius:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+#header{grid-area:header;padding:6px 8px;background:linear-gradient(180deg,#161d24 0%, #1f2730 100%)}
+.header-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .head-input{display:none}
-.load-file,.button-1{border:none;border-radius:10px;padding:12px 10px;font-weight:700;font-size:17px;color:#d8dde5;cursor:pointer;min-height:56px;background:linear-gradient(180deg,#24303f 0%, #2c3848 100%)}
+.load-file,.button-1{border:none;border-radius:8px;padding:8px 6px;font-weight:700;font-size:12px;color:#d8dde5;cursor:pointer;min-height:36px;background:linear-gradient(180deg,#24303f 0%, #2c3848 100%)}
 .load-file{display:flex;align-items:center;justify-content:center}
 .button-1.head{background:linear-gradient(180deg,#254d9a 0%, #2b5bb7 100%)}
 .button-1.disabled{opacity:.45;cursor:not-allowed}
 
-#pnl-field{grid-area:field;padding:10px;background:#1b2129;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
-.player{position:relative;min-height:170px;border-radius:14px;background:#4f5964;border:2px solid #0d1116;padding:12px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center}
+#pnl-field{grid-area:field;padding:6px;background:#1b2129;display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+.player{position:relative;min-height:120px;border-radius:10px;background:#4f5964;border:2px solid #0d1116;padding:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center}
 .player.active{box-shadow:inset 0 0 0 3px var(--yellow)}
 .player.selected{box-shadow:inset 0 0 0 3px #fff, inset 0 0 0 6px var(--yellow)}
-.player.alert-3min{animation:borderBlink 1s linear infinite}
-@keyframes borderBlink{0%,100%{box-shadow:inset 0 0 0 4px #f0c400}50%{box-shadow:inset 0 0 0 4px transparent}}
-.player.alert-4min{animation:fullBlink 0.8s linear infinite}
-@keyframes fullBlink{0%,100%{background:#7a3e47;box-shadow:inset 0 0 0 4px #ff4b5e}50%{background:#2a0f12;box-shadow:inset 0 0 0 4px #ffffff}}
-.jersey-no{margin:0 0 8px 0;font-size:28px;line-height:1;font-weight:800;color:var(--cyan);text-align:center}
-.jersey-name{margin:0 0 14px 0;font-size:24px;line-height:1.05;font-weight:600;color:#f4f4f4;text-align:center}
-.jersey-time{margin:0 0 10px 0;font-size:64px;text-align:center;line-height:1;font-weight:800;color:#e4e4e4}
-.jersey-total{margin:0;font-size:20px;font-weight:700;color:#dbe2ec;text-align:center}
+.jersey-no{margin:0 0 4px 0;font-size:20px;font-weight:800;color:var(--cyan);text-align:center;line-height:1}
+.jersey-name{margin:0 0 8px 0;font-size:16px;font-weight:700;color:#f4f4f4;text-align:center;line-height:1.05}
+.jersey-time{margin:0 0 6px 0;font-size:44px;font-weight:900;text-align:center;line-height:1}
+.player.active .jersey-time{color:var(--green)}
+.player:not(.active) .jersey-time{color:var(--red)}
+.jersey-total{margin:0;font-size:13px;font-weight:700;color:#fff;text-align:center;line-height:1}
 .jersey-rot,.jersey-wr,.jersey-tp,.jersey-tr{display:none!important}
 .jersey{position:absolute;inset:0;width:100%;height:100%;border:none;background:transparent;opacity:0;cursor:pointer}
 
-#right-column{grid-area:right;display:grid;grid-template-rows:auto auto;gap:10px}
-#pnl-time{padding:10px;background:linear-gradient(180deg,#3f4a56 0%, #53606c 100%)}
-.top-time-row{display:grid;grid-template-columns:1fr 130px;gap:10px;margin-bottom:14px}
-.time-block{background:linear-gradient(180deg,#313b45 0%, #47535f 100%);border-radius:8px;padding:8px}
-.txt-lbl{display:block;text-align:center;font-size:15px;font-weight:700;margin-bottom:6px}
-.clock,.period,.score-click{margin:0;text-align:center;background:linear-gradient(180deg,#8492a2 0%, #718090 100%);color:#d1dae8;border-radius:8px;font-weight:800;line-height:1;padding:10px 6px}
-.clock{font-size:74px}.period{font-size:70px}.break{opacity:.75}.pause{box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}.toggle{box-shadow:inset 0 0 0 3px rgba(255,255,255,.75)}
-.time-buttons{display:flex;flex-direction:column;align-items:center;gap:18px;margin-top:6px}
-.small-buttons{display:flex;flex-direction:column;align-items:center;gap:18px;width:100%}
-.button-1.kickoff{background:linear-gradient(180deg,#21c98a 0%, #178d73 100%);width:85%;min-height:92px;font-size:22px}
-.button-1.pause{background:linear-gradient(180deg,#867247 0%, #77633c 100%);width:70%;min-height:74px;font-size:18px}
-.button-1.break{background:linear-gradient(180deg,#855864 0%, #6c4854 100%);width:70%;min-height:74px;font-size:18px}
-#pnl-match{padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;background:linear-gradient(180deg,#313b45 0%, #47535f 100%);overflow:hidden}
-.team-name{padding:10px 6px;font-size:24px;font-weight:700;background:#2c343d;border-bottom:2px solid rgba(255,255,255,.15)}
-#home{border-right:2px solid rgba(255,255,255,.15)}
-.score-click-wrap{display:flex;flex-direction:column;gap:8px}
-.score-lbl{margin:0}
-.score-click{border:none;width:100%;min-height:100px;font-size:64px;cursor:pointer}
-.score-click:hover{filter:brightness(1.06)}
+#right-column{grid-area:right;display:grid;grid-template-rows:auto auto;gap:6px}
+#pnl-time,#pnl-match{padding:6px}
+.top-time-row{display:grid;grid-template-columns:1fr 84px;gap:6px;margin-bottom:8px}
+.time-block{background:linear-gradient(180deg,#313b45 0%, #47535f 100%);border-radius:8px;padding:6px}
+.txt-lbl{display:block;text-align:center;font-size:11px;font-weight:700;margin-bottom:4px}
+.clock,.period,.score-click{margin:0;text-align:center;background:linear-gradient(180deg,#8492a2 0%, #718090 100%);color:#eef4ff;border-radius:8px;font-weight:900;line-height:1;padding:8px 4px;opacity:1}
+.clock{font-size:40px}
+.period{font-size:38px}
+.break{opacity:.8}
+.pause{box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
+.toggle{box-shadow:inset 0 0 0 3px rgba(255,255,255,.75)}
+.time-buttons{display:flex;flex-direction:column;align-items:center;gap:8px}
+.button-1.kickoff{background:linear-gradient(180deg,#21c98a 0%, #178d73 100%);width:88%;min-height:48px;font-size:14px}
+.button-1.pause{background:linear-gradient(180deg,#867247 0%, #77633c 100%);width:78%;min-height:36px;font-size:12px}
+.button-1.break{background:linear-gradient(180deg,#855864 0%, #6c4854 100%);width:78%;min-height:36px;font-size:12px}
+
+#pnl-match{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:linear-gradient(180deg,#313b45 0%, #47535f 100%)}
+.team-name{margin:0;padding:4px 3px;font-size:13px;font-weight:800;background:#2c343d;border-bottom:1px solid rgba(255,255,255,.15)}
+#home{border-right:1px solid rgba(255,255,255,.15)}
+.score-click{border:none;width:100%;min-height:48px;font-size:34px;cursor:pointer}
 .score-box{display:none!important}
+
 #pnl-metrics,#pnl-analysis{display:none}
-.tbl-data{width:100%}
-
-
-/* COMPACTO: para abrir e ver tudo logo */
-#app-container{
-  padding:4px !important;
-}
-#grid-container{
-  grid-template-columns:minmax(1080px,1fr) 300px !important;
-  gap:6px !important;
-  max-width:1380px !important;
-  min-width:1380px !important;
-}
-.panel{
-  border-radius:8px !important;
-}
-#header{
-  padding:6px 8px !important;
-}
-.header-actions{
-  gap:6px !important;
-}
-.load-file,.button-1{
-  min-height:42px !important;
-  font-size:13px !important;
-  padding:8px 6px !important;
-  border-radius:8px !important;
-}
-
-#pnl-field{
-  padding:6px !important;
-  gap:3px !important;
-}
-.player{
-  min-height:120px !important;
-  padding:8px !important;
-  border-radius:10px !important;
-}
-.jersey-no{
-  font-size:20px !important;
-  margin:0 0 4px 0 !important;
-}
-.jersey-name{
-  font-size:18px !important;
-  margin:0 0 8px 0 !important;
-}
-.jersey-time{
-  font-size:44px !important;
-  margin:0 0 6px 0 !important;
-}
-.jersey-total{
-  font-size:14px !important;
-}
-
-#right-column{
-  gap:6px !important;
-}
-#pnl-time,#pnl-match{
-  padding:6px !important;
-}
-.top-time-row{
-  grid-template-columns:1fr 88px !important;
-  gap:6px !important;
-  margin-bottom:8px !important;
-}
-.time-block{
-  padding:6px !important;
-}
-.txt-lbl{
-  font-size:11px !important;
-  margin-bottom:4px !important;
-}
-.clock{
-  font-size:42px !important;
-  padding:8px 4px !important;
-}
-.period{
-  font-size:40px !important;
-  padding:8px 4px !important;
-}
-.time-buttons{
-  gap:8px !important;
-  margin-top:2px !important;
-}
-.small-buttons{
-  gap:8px !important;
-}
-.button-1.kickoff{
-  width:88% !important;
-  min-height:54px !important;
-  font-size:16px !important;
-}
-.button-1.pause,.button-1.break{
-  width:78% !important;
-  min-height:42px !important;
-  font-size:14px !important;
-}
-
-#pnl-match{
-  gap:6px !important;
-}
-.team-name{
-  padding:6px 4px !important;
-  font-size:16px !important;
-}
-.score-click-wrap{
-  gap:6px !important;
-}
-.score-click{
-  min-height:60px !important;
-  font-size:38px !important;
-  border-radius:8px !important;
-}
-
-
-/* ULTRA COMPACTO (reduzir mesmo tudo) */
-#grid-container{
-  grid-template-columns:minmax(900px,1fr) 260px !important;
-  max-width:1200px !important;
-  min-width:1200px !important;
-}
-
-#pnl-field{
-  grid-template-columns:repeat(4, 1fr) !important;
-  gap:2px !important;
-  padding:4px !important;
-}
-
-.player{
-  min-height:90px !important;
-  padding:6px !important;
-}
-
-.jersey-no{
-  font-size:16px !important;
-}
-.jersey-name{
-  font-size:14px !important;
-}
-.jersey-time{
-  font-size:30px !important;
-}
-.jersey-total{
-  font-size:11px !important;
-}
-
-.load-file,.button-1{
-  min-height:32px !important;
-  font-size:11px !important;
-  padding:4px !important;
-}
-
-.clock{
-  font-size:28px !important;
-}
-.period{
-  font-size:26px !important;
-}
-
-.button-1.kickoff{
-  min-height:40px !important;
-  font-size:12px !important;
-}
-.button-1.pause,
-.button-1.break{
-  min-height:32px !important;
-  font-size:11px !important;
-}
-
-.score-click{
-  min-height:40px !important;
-  font-size:26px !important;
-}
-
-
-/* Mostrar números da contagem com mais destaque */
-.jersey-time{
-  color:#49d16d !important;
-  opacity:1 !important;
-}
-.player:not(.active) .jersey-time{
-  color:#ff6759 !important;
-}
-.clock,.period,.score-click{
-  opacity:1 !important;
-  color:#eef4ff !important;
-}
-.score-click-wrap{
-  justify-content:center !important;
-}
-
-
-/* DESTACAR TEMPO PEQUENO (tempo jogado total) */
-.jersey-total{
-  color:#00ff9c !important;
-  font-weight:800 !important;
-  font-size:13px !important;
-  opacity:1 !important;
-}
-
-/* tempo pequeno quando não está em campo */
-.player:not(.active) .jersey-total{
-  color:#ff6b6b !important;
-}
-
-
-/* TEMPO PEQUENO SEMPRE BRANCO */
-.jersey-total{
-  color:#ffffff !important;
-  font-weight:700 !important;
-  font-size:13px !important;
-}
-
-/* remover cores diferentes */
-.player:not(.active) .jersey-total{
-  color:#ffffff !important;
-}
-
-
-/* ALERTA 3 MIN: amarelo suave a piscar */
-.player.alert-3min{
-  animation: alertYellow 1s linear infinite !important;
-}
-@keyframes alertYellow{
-  0%,100%{
-    box-shadow: inset 0 0 0 3px #f0c400, 0 0 0 rgba(240,196,0,0);
-  }
-  50%{
-    box-shadow: inset 0 0 0 3px rgba(240,196,0,0.15), 0 0 10px rgba(240,196,0,0.45);
-  }
-}
-
-/* ALERTA 4 MIN: vermelho mais intenso */
-.player.alert-4min{
-  animation: alertRedStrong 0.45s linear infinite !important;
-}
-@keyframes alertRedStrong{
-  0%,100%{
-    background:#7a3e47;
-    box-shadow: inset 0 0 0 4px #ff3b30, 0 0 18px rgba(255,59,48,0.55);
-  }
-  50%{
-    background:#2a0f12;
-    box-shadow: inset 0 0 0 4px #ffffff, 0 0 28px rgba(255,59,48,0.95);
-  }
-}
-
-
-/* ALERTAS MUITO VISÍVEIS */
-.player.alert-3min{
-  animation: alertaAmareloForte 0.7s steps(1,end) infinite !important;
-  border-color:#ffd400 !important;
-}
-@keyframes alertaAmareloForte{
-  0%,100%{
-    box-shadow: inset 0 0 0 5px #ffd400, 0 0 18px rgba(255,212,0,0.55) !important;
-    background:#5e646d !important;
-  }
-  50%{
-    box-shadow: inset 0 0 0 1px #4f5964, 0 0 0 rgba(255,212,0,0) !important;
-    background:#4f5964 !important;
-  }
-}
-
-.player.alert-4min{
-  animation: alertaVermelhoMuitoForte 0.35s steps(1,end) infinite !important;
-  border-color:#ff2b2b !important;
-}
-@keyframes alertaVermelhoMuitoForte{
-  0%,100%{
-    box-shadow: inset 0 0 0 6px #ff2b2b, 0 0 26px rgba(255,43,43,0.95) !important;
-    background:#a32020 !important;
-  }
-  50%{
-    box-shadow: inset 0 0 0 6px #ffffff, 0 0 8px rgba(255,255,255,0.5) !important;
-    background:#4f5964 !important;
-  }
-}
-
-
-/* Limpeza do bloco do resultado */
-.score-lbl{
-  display:none !important;
-}
-.score-box{
-  display:none !important;
-}
-.score-click-wrap{
-  justify-content:center !important;
-  align-items:center !important;
-}
-.score-click{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-}
-
-/* Alertas visíveis */
-.player.alert-3min{
-  animation: alertaAmareloForte 0.7s steps(1,end) infinite !important;
-  border-color:#ffd400 !important;
-}
-@keyframes alertaAmareloForte{
-  0%,100%{
-    box-shadow: inset 0 0 0 5px #ffd400, 0 0 18px rgba(255,212,0,0.55) !important;
-    background:#5e646d !important;
-  }
-  50%{
-    box-shadow: inset 0 0 0 1px #4f5964, 0 0 0 rgba(255,212,0,0) !important;
-    background:#4f5964 !important;
-  }
-}
-
-.player.alert-4min{
-  animation: alertaVermelhoMuitoForte 0.35s steps(1,end) infinite !important;
-  border-color:#ff2b2b !important;
-}
-@keyframes alertaVermelhoMuitoForte{
-  0%,100%{
-    box-shadow: inset 0 0 0 6px #ff2b2b, 0 0 26px rgba(255,43,43,0.95) !important;
-    background:#a32020 !important;
-  }
-  50%{
-    box-shadow: inset 0 0 0 6px #ffffff, 0 0 8px rgba(255,255,255,0.5) !important;
-    background:#4f5964 !important;
-  }
-}
-
-
-/* Aproximar marcador dos nomes das equipas */
-#pnl-match{
-  gap:4px !important;
-}
-.team-name{
-  margin:0 !important;
-  padding:6px 4px !important;
-}
-.score-click-wrap{
-  gap:2px !important;
-  margin-top:-2px !important;
-}
-.score-click{
-  margin-top:0 !important;
-}
-
-/* Tempo pequeno: mais visível e colorido */
-.jersey-total{
-  margin-top:2px !important;
-  line-height:1 !important;
-  font-size:14px !important;
-  font-weight:800 !important;
-  color:#39ff88 !important;
-}
-.player:not(.active) .jersey-total{
-  color:#39ff88 !important;
-}
-
-
-/* equipa casa/fora mais pequeno */
-.team-name{
-  font-size:13px !important;
-  padding:4px 3px !important;
-}
-
-/* zero mais encostado aos nomes */
-#pnl-match{
-  gap:2px !important;
-}
-.score-click-wrap{
-  gap:0 !important;
-  margin-top:-4px !important;
-}
-.score-click{
-  min-height:48px !important;
-  font-size:34px !important;
-}
-
-/* tempo pequeno realmente visível */
-.jersey-total{
-  display:block !important;
-  font-size:13px !important;
-  font-weight:800 !important;
-  color:#ffffff !important;
-  margin-top:2px !important;
-  opacity:1 !important;
-}
+.player.alert-3min{animation:alertYellow .7s steps(1,end) infinite}
+@keyframes alertYellow{0%,100%{box-shadow:inset 0 0 0 4px #ffd400,0 0 16px rgba(255,212,0,.4)}50%{box-shadow:inset 0 0 0 1px #4f5964,0 0 0 rgba(255,212,0,0)}}
+.player.alert-4min{animation:alertRed .35s steps(1,end) infinite}
+@keyframes alertRed{0%,100%{background:#a32020;box-shadow:inset 0 0 0 5px #ff2b2b,0 0 24px rgba(255,43,43,.95)}50%{background:#4f5964;box-shadow:inset 0 0 0 5px #fff,0 0 8px rgba(255,255,255,.5)}}
