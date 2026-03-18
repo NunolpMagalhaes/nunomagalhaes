@@ -14,19 +14,12 @@
     <div id="grid-container">
       <div class="panel header" id="header">
         <div class="header-actions">
-          <label class="load-file" id="lbl-head-team">
-            <input type="file" class="head-input" id="head-team">
-            Carregar Equipa
-          </label>
-          <label class="load-file" id="lbl-head-match">
-            <input type="file" class="head-input" id="head-match">
-            Carregar Jogo
-          </label>
+          <label class="load-file" id="lbl-head-team"><input type="file" class="head-input" id="head-team">Carregar Equipa</label>
+          <label class="load-file" id="lbl-head-match"><input type="file" class="head-input" id="head-match">Carregar Jogo</label>
           <button class="button-1 head" id="head-save">Guardar Jogo</button>
           <button class="button-1 head" id="head-export">Exportar Dados</button>
         </div>
       </div>
-
       <div class="panel" id="pnl-field">
         <div class="player active" id="play1">
           <p class="jersey-no" id="no1">1.</p>
@@ -220,19 +213,21 @@
         <div class="panel" id="pnl-match">
           <p class="txt-1 team-name" id="home">HOME TEAM</p>
           <p class="txt-1 team-name" id="away">AWAY TEAM</p>
-          <button class="score-adjust left" id="goal-h">-</button>
-          <button class="score-adjust right" id="goal-a">+</button>
-          <p class="txt-1 score-box" id="score-h">0</p>
-          <p class="txt-1 score-box" id="score-a">0</p>
+          <div class="score-click-wrap">
+            <label class="txt-lbl score-lbl">CASA</label>
+            <button class="score-click" id="goal-h">0</button>
+          </div>
+          <div class="score-click-wrap">
+            <label class="txt-lbl score-lbl">FORA</label>
+            <button class="score-click" id="goal-a">0</button>
+          </div>
+          <p class="txt-1 score-box hidden" id="score-h">0</p>
+          <p class="txt-1 score-box hidden" id="score-a">0</p>
         </div>
       </div>
 
       <div class="panel hidden" id="pnl-metrics"></div>
-      <div class="panel hidden" id="pnl-analysis">
-        <table class="tbl-data" id="tbl-anl">
-          <tr></tr>
-        </table>
-      </div>
+      <div class="panel hidden" id="pnl-analysis"><table class="tbl-data" id="tbl-anl"><tr></tr></table></div>
     </div>
   </div>
   <script src="main.js"></script>

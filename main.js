@@ -938,8 +938,8 @@ function updateTeamInfo(mInfo, pInfo) {
     txtAway.innerHTML = struct_match.initials[1];
     txtHome.style.fontSize = "2vh"
     txtAway.style.fontSize = "2vh"
-    btnGH.innerHTML = "Golo<br />" + struct_match.initials[0];
-    btnGA.innerHTML = "Golo<br />" + struct_match.initials[1];
+    btnGH.innerHTML = struct_match.initials[0] + "\n Goal";
+    btnGA.innerHTML = struct_match.initials[1] + "\n Goal";
 
     // Update Player UI Labels
     updateLiveButtons();
@@ -985,8 +985,8 @@ btnLoadMatch.onchange = function() {
             txtAway.innerHTML = struct_match.initials[1];
             txtHome.style.fontSize = "2vh"
             txtAway.style.fontSize = "2vh"
-            btnGH.innerHTML = "Golo<br />" + struct_match.initials[0];
-            btnGA.innerHTML = "Golo<br />" + struct_match.initials[1];
+            btnGH.innerHTML = struct_match.initials[0] + "\n Goal";
+            btnGA.innerHTML = struct_match.initials[1] + "\n Goal";
             btnM1Lbl.innerHTML = struct_general.metric_name[0];
             btnM2Lbl.innerHTML = struct_general.metric_name[1];
             btnM3Lbl.innerHTML = struct_general.metric_name[2];
@@ -1293,12 +1293,9 @@ function updateFourMinuteAlert() {
     for (var i = 1; i <= struct_team.players.length; i++) {
         var card = document.getElementById("play" + i);
         if (!card) continue;
-
         var playSeconds = struct_team.players[i-1].tplay || 0;
-
         card.classList.remove('alert-3min');
         card.classList.remove('alert-4min');
-
         if (struct_team.players[i-1].active == 1) {
             if (playSeconds >= 240) {
                 card.classList.add('alert-4min');
@@ -1309,27 +1306,35 @@ function updateFourMinuteAlert() {
     }
 }
 
+function refreshScoreButtons() {
+    if (btnGH) btnGH.innerHTML = String(struct_match["score"][0]);
+    if (btnGA) btnGA.innerHTML = String(struct_match["score"][1]);
+    if (txtHScore) txtHScore.innerHTML = String(struct_match["score"][0]);
+    if (txtAScore) txtAScore.innerHTML = String(struct_match["score"][1]);
+}
+
+window.addEventListener('load', function() {
+  var metrics = document.getElementById('pnl-metrics');
+  if (metrics) metrics.style.display = 'none';
+  var analysis = document.getElementById('pnl-analysis');
+  if (analysis) analysis.style.display = 'none';
+  var stopPanel = document.getElementById('pnl-stop');
+  if (stopPanel) stopPanel.style.display = 'none';
+  refreshScoreButtons();
+  updateFourMinuteAlert();
+});
+
 var _oldUpdateLiveVis = updateLiveVis;
 updateLiveVis = function() {
     _oldUpdateLiveVis();
     updateFourMinuteAlert();
 };
 
-
-window.addEventListener('load', function() {
-  var btnGH = document.getElementById('goal-h');
-  var btnGA = document.getElementById('goal-a');
-  if (btnGH) btnGH.innerHTML = '-';
-  if (btnGA) btnGA.innerHTML = '+';
-});
-
 btnGH.onclick = function() {
-    if (struct_match["score"][0] > 0) {
-        struct_match["score"][0]--;
-        txtHScore.innerHTML = String(struct_match["score"][0]);
-    }
+    struct_match["score"][0]++;
+    refreshScoreButtons();
 }
 btnGA.onclick = function() {
-    struct_match["score"][0]++;
-    txtHScore.innerHTML = String(struct_match["score"][0]);
+    struct_match["score"][1]++;
+    refreshScoreButtons();
 }
