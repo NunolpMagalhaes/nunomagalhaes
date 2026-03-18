@@ -938,8 +938,8 @@ function updateTeamInfo(mInfo, pInfo) {
     txtAway.innerHTML = struct_match.initials[1];
     txtHome.style.fontSize = "2vh"
     txtAway.style.fontSize = "2vh"
-    btnGH.innerHTML = struct_match.initials[0] + "<br />Golo";
-    btnGA.innerHTML = struct_match.initials[1] + "<br />Golo";
+    btnGH.innerHTML = "Golo<br />" + struct_match.initials[0];
+    btnGA.innerHTML = "Golo<br />" + struct_match.initials[1];
 
     // Update Player UI Labels
     updateLiveButtons();
@@ -985,8 +985,8 @@ btnLoadMatch.onchange = function() {
             txtAway.innerHTML = struct_match.initials[1];
             txtHome.style.fontSize = "2vh"
             txtAway.style.fontSize = "2vh"
-            btnGH.innerHTML = struct_match.initials[0] + "<br />Golo";
-            btnGA.innerHTML = struct_match.initials[1] + "<br />Golo";
+            btnGH.innerHTML = "Golo<br />" + struct_match.initials[0];
+            btnGA.innerHTML = "Golo<br />" + struct_match.initials[1];
             btnM1Lbl.innerHTML = struct_general.metric_name[0];
             btnM2Lbl.innerHTML = struct_general.metric_name[1];
             btnM3Lbl.innerHTML = struct_general.metric_name[2];
@@ -1289,19 +1289,28 @@ function getAllIndexes(arr, val) {
 }
 
 
-window.addEventListener('load', function() {
-  var metrics = document.getElementById('pnl-metrics');
-  if (metrics) metrics.style.display = 'none';
-  var analysis = document.getElementById('pnl-analysis');
-  if (analysis) analysis.style.display = 'none';
-  var stopPanel = document.getElementById('pnl-stop');
-  if (stopPanel) stopPanel.style.display = 'none';
-  var lblMain = document.getElementById('lbl-clock-main');
-  if (lblMain) lblMain.innerHTML = 'TEMPO DE JOGO:';
-  var lblPer = document.getElementById('lbl-period');
-  if (lblPer) lblPer.innerHTML = 'PERÍODO:';
-  var btnGoalH = document.getElementById('goal-h');
-  var btnGoalA = document.getElementById('goal-a');
-  if (btnGoalH && !btnGoalH.innerHTML.includes('<br')) btnGoalH.innerHTML = 'Golo<br />Casa';
-  if (btnGoalA && !btnGoalA.innerHTML.includes('<br')) btnGoalA.innerHTML = 'Golo<br />Fora';
-});
+function updateFourMinuteAlert() {
+    for (var i = 1; i <= struct_team.players.length; i++) {
+        var card = document.getElementById("play" + i);
+        if (!card) continue;
+
+        var playSeconds = struct_team.players[i-1].tplay || 0;
+
+        card.classList.remove('alert-3min');
+        card.classList.remove('alert-4min');
+
+        if (struct_team.players[i-1].active == 1) {
+            if (playSeconds >= 240) {
+                card.classList.add('alert-4min');
+            } else if (playSeconds >= 180) {
+                card.classList.add('alert-3min');
+            }
+        }
+    }
+}
+
+var _oldUpdateLiveVis = updateLiveVis;
+updateLiveVis = function() {
+    _oldUpdateLiveVis();
+    updateFourMinuteAlert();
+};
