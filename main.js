@@ -1313,6 +1313,15 @@ function refreshScoreButtons() {
     if (txtAScore) txtAScore.innerHTML = String(struct_match["score"][1]);
 }
 
+function refreshPlayerTotals() {
+    for (var i = 1; i <= struct_team.players.length; i++) {
+        var totalEl = document.getElementById("total" + i);
+        if (!totalEl) continue;
+        var tot = struct_team.players[i-1].totplay || 0;
+        totalEl.innerHTML = setClock(tot);
+    }
+}
+
 window.addEventListener('load', function() {
   var metrics = document.getElementById('pnl-metrics');
   if (metrics) metrics.style.display = 'none';
@@ -1321,12 +1330,14 @@ window.addEventListener('load', function() {
   var stopPanel = document.getElementById('pnl-stop');
   if (stopPanel) stopPanel.style.display = 'none';
   refreshScoreButtons();
+  refreshPlayerTotals();
   updateFourMinuteAlert();
 });
 
 var _oldUpdateLiveVis = updateLiveVis;
 updateLiveVis = function() {
     _oldUpdateLiveVis();
+    refreshPlayerTotals();
     updateFourMinuteAlert();
 };
 
