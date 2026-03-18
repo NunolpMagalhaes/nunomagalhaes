@@ -297,3 +297,84 @@ body{min-height:100vh;overflow-x:auto}
     box-shadow: inset 0 0 0 4px #ffffff, 0 0 28px rgba(255,59,48,0.95);
   }
 }
+
+
+/* ALERTAS MUITO VISÍVEIS */
+.player.alert-3min{
+  animation: alertaAmareloForte 0.7s steps(1,end) infinite !important;
+  border-color:#ffd400 !important;
+}
+@keyframes alertaAmareloForte{
+  0%,100%{
+    box-shadow: inset 0 0 0 5px #ffd400, 0 0 18px rgba(255,212,0,0.55) !important;
+    background:#5e646d !important;
+  }
+  50%{
+    box-shadow: inset 0 0 0 1px #4f5964, 0 0 0 rgba(255,212,0,0) !important;
+    background:#4f5964 !important;
+  }
+}
+
+.player.alert-4min{
+  animation: alertaVermelhoMuitoForte 0.35s steps(1,end) infinite !important;
+  border-color:#ff2b2b !important;
+}
+@keyframes alertaVermelhoMuitoForte{
+  0%,100%{
+    box-shadow: inset 0 0 0 6px #ff2b2b, 0 0 26px rgba(255,43,43,0.95) !important;
+    background:#a32020 !important;
+  }
+  50%{
+    box-shadow: inset 0 0 0 6px #ffffff, 0 0 8px rgba(255,255,255,0.5) !important;
+    background:#4f5964 !important;
+  }
+}
+
+
+/* Limpeza do bloco do resultado */
+.score-lbl{
+  display:none !important;
+}
+.score-box{
+  display:none !important;
+}
+.score-click-wrap{
+  justify-content:center !important;
+  align-items:center !important;
+}
+.score-click{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+/* Alertas visíveis */
+.player.alert-3min{
+  animation: alertaAmareloForte 0.7s steps(1,end) infinite !important;
+  border-color:#ffd400 !important;
+}
+@keyframes alertaAmareloForte{
+  0%,100%{
+    box-shadow: inset 0 0 0 5px #ffd400, 0 0 18px rgba(255,212,0,0.55) !important;
+    background:#5e646d !important;
+  }
+  50%{
+    box-shadow: inset 0 0 0 1px #4f5964, 0 0 0 rgba(255,212,0,0) !important;
+    background:#4f5964 !important;
+  }
+}
+
+.player.alert-4min{
+  animation: alertaVermelhoMuitoForte 0.35s steps(1,end) infinite !important;
+  border-color:#ff2b2b !important;
+}
+@keyframes alertaVermelhoMuitoForte{
+  0%,100%{
+    box-shadow: inset 0 0 0 6px #ff2b2b, 0 0 26px rgba(255,43,43,0.95) !important;
+    background:#a32020 !important;
+  }
+  50%{
+    box-shadow: inset 0 0 0 6px #ffffff, 0 0 8px rgba(255,255,255,0.5) !important;
+    background:#4f5964 !important;
+  }
+}
