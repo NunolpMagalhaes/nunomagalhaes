@@ -164,3 +164,63 @@ body{min-height:100vh;overflow-x:auto}
   font-size:38px !important;
   border-radius:8px !important;
 }
+
+
+/* ULTRA COMPACTO (reduzir mesmo tudo) */
+#grid-container{
+  grid-template-columns:minmax(900px,1fr) 260px !important;
+  max-width:1200px !important;
+  min-width:1200px !important;
+}
+
+#pnl-field{
+  grid-template-columns:repeat(4, 1fr) !important;
+  gap:2px !important;
+  padding:4px !important;
+}
+
+.player{
+  min-height:90px !important;
+  padding:6px !important;
+}
+
+.jersey-no{
+  font-size:16px !important;
+}
+.jersey-name{
+  font-size:14px !important;
+}
+.jersey-time{
+  font-size:30px !important;
+}
+.jersey-total{
+  font-size:11px !important;
+}
+
+.load-file,.button-1{
+  min-height:32px !important;
+  font-size:11px !important;
+  padding:4px !important;
+}
+
+.clock{
+  font-size:28px !important;
+}
+.period{
+  font-size:26px !important;
+}
+
+.button-1.kickoff{
+  min-height:40px !important;
+  font-size:12px !important;
+}
+.button-1.pause,
+.button-1.break{
+  min-height:32px !important;
+  font-size:11px !important;
+}
+
+.score-click{
+  min-height:40px !important;
+  font-size:26px !important;
+}
