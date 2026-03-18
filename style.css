@@ -407,3 +407,33 @@ body{min-height:100vh;overflow-x:auto}
 .player:not(.active) .jersey-total{
   color:#39ff88 !important;
 }
+
+
+/* equipa casa/fora mais pequeno */
+.team-name{
+  font-size:13px !important;
+  padding:4px 3px !important;
+}
+
+/* zero mais encostado aos nomes */
+#pnl-match{
+  gap:2px !important;
+}
+.score-click-wrap{
+  gap:0 !important;
+  margin-top:-4px !important;
+}
+.score-click{
+  min-height:48px !important;
+  font-size:34px !important;
+}
+
+/* tempo pequeno realmente visível */
+.jersey-total{
+  display:block !important;
+  font-size:13px !important;
+  font-weight:800 !important;
+  color:#ffffff !important;
+  margin-top:2px !important;
+  opacity:1 !important;
+}
