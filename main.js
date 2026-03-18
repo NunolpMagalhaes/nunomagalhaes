@@ -1314,3 +1314,22 @@ updateLiveVis = function() {
     _oldUpdateLiveVis();
     updateFourMinuteAlert();
 };
+
+
+window.addEventListener('load', function() {
+  var btnGH = document.getElementById('goal-h');
+  var btnGA = document.getElementById('goal-a');
+  if (btnGH) btnGH.innerHTML = '-';
+  if (btnGA) btnGA.innerHTML = '+';
+});
+
+btnGH.onclick = function() {
+    if (struct_match["score"][0] > 0) {
+        struct_match["score"][0]--;
+        txtHScore.innerHTML = String(struct_match["score"][0]);
+    }
+}
+btnGA.onclick = function() {
+    struct_match["score"][0]++;
+    txtHScore.innerHTML = String(struct_match["score"][0]);
+}
