@@ -378,3 +378,32 @@ body{min-height:100vh;overflow-x:auto}
     background:#4f5964 !important;
   }
 }
+
+
+/* Aproximar marcador dos nomes das equipas */
+#pnl-match{
+  gap:4px !important;
+}
+.team-name{
+  margin:0 !important;
+  padding:6px 4px !important;
+}
+.score-click-wrap{
+  gap:2px !important;
+  margin-top:-2px !important;
+}
+.score-click{
+  margin-top:0 !important;
+}
+
+/* Tempo pequeno: mais visível e colorido */
+.jersey-total{
+  margin-top:2px !important;
+  line-height:1 !important;
+  font-size:14px !important;
+  font-weight:800 !important;
+  color:#39ff88 !important;
+}
+.player:not(.active) .jersey-total{
+  color:#39ff88 !important;
+}

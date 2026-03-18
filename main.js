@@ -1495,3 +1495,57 @@ btnGA.onclick = function() {
     struct_match["score"][1] = (struct_match["score"][1] || 0) + 1;
     refreshScoreButtonsFinal();
 }
+
+
+function refreshScoreButtonsStrict() {
+    if (btnGH) btnGH.textContent = String(struct_match["score"][0] || 0);
+    if (btnGA) btnGA.textContent = String(struct_match["score"][1] || 0);
+    if (txtHScore) txtHScore.textContent = String(struct_match["score"][0] || 0);
+    if (txtAScore) txtAScore.textContent = String(struct_match["score"][1] || 0);
+}
+
+function refreshSmallTimesStrict() {
+    for (var i = 1; i <= struct_team.players.length; i++) {
+        var el = document.getElementById("total" + i);
+        if (!el) continue;
+        var tot = struct_team.players[i-1].totplay || 0;
+        el.textContent = setClock(tot);
+    }
+}
+
+function bindScoreClicksStrict() {
+    if (btnGH) {
+        btnGH.onclick = function(e) {
+            e.preventDefault();
+            struct_match["score"][0] = (struct_match["score"][0] || 0) + 1;
+            refreshScoreButtonsStrict();
+        };
+    }
+    if (btnGA) {
+        btnGA.onclick = function(e) {
+            e.preventDefault();
+            struct_match["score"][1] = (struct_match["score"][1] || 0) + 1;
+            refreshScoreButtonsStrict();
+        };
+    }
+}
+
+window.addEventListener('load', function() {
+    refreshScoreButtonsStrict();
+    refreshSmallTimesStrict();
+    bindScoreClicksStrict();
+});
+
+setInterval(function() {
+    refreshSmallTimesStrict();
+    refreshScoreButtonsStrict();
+}, 500);
+
+if (typeof updateLiveVis === 'function') {
+    var __prevUpdateLiveVisStrict = updateLiveVis;
+    updateLiveVis = function() {
+        __prevUpdateLiveVisStrict();
+        refreshSmallTimesStrict();
+        refreshScoreButtonsStrict();
+    };
+}
